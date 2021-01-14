@@ -24,7 +24,7 @@ const Header = () => {
                                         Sign out
                                     </Nav.Link>
                                 </LinkContainer>
-                                <LinkContainer to='/contact' >
+                                <LinkContainer to='/profile' >
                                     <Nav.Link active> profile </Nav.Link>
                                 </LinkContainer>
                             </>

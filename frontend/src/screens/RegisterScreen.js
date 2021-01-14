@@ -13,7 +13,7 @@ const RegisterScreen = ({ history }) => {
     const dispatch = useDispatch();
     const { accountLogin } = useSelector(state => state.accountLogin);
 
-    const submitHander = (e) => {
+    const submitHandler = (e) => {
         e.preventDefault();
         if (password === password2) {
             const account = {
@@ -37,7 +37,7 @@ const RegisterScreen = ({ history }) => {
             <Row className='justify-content-md-center'>
                 <Col xs={12} md={6}>
                     <h2>Become one of us...</h2>
-                    <Form onSubmit={submitHander}>
+                    <Form onSubmit={submitHandler}>
                         <Row>
                             <Col md={6}>
                                 <Form.Group controlId='firstname'>
@@ -89,7 +89,7 @@ const RegisterScreen = ({ history }) => {
                                 onChange={(e) => setPassword2(e.target.value)}>
                             </FormControl>
                         </Form.Group>
-                        <Button type='submit' variant='primary'>
+                        <Button className='my-3' type='submit' variant='primary'>
                             Create Account
                         </Button>
                     </Form>

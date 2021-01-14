@@ -9,9 +9,9 @@ import ContactScreen from './screens/ContactScreen';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import ProductScreen from './screens/ProductScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ShopScreen from './screens/ShopScreen';
-
 
 const App = () => {
 	return (
@@ -25,6 +25,7 @@ const App = () => {
 					<Route path='/product/:id' component={ProductScreen} />
 					<Route path='/profile/signin' component={LoginScreen} />
 					<Route path='/profile/create' component={RegisterScreen} />
+					<Route path='/profile' component={ProfileScreen} exact />
 					<Route path='/shop' component={ShopScreen} />
 					<Route path='/' component={HomeScreen} exact />
 				</Container>

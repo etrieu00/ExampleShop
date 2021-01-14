@@ -14,9 +14,13 @@ const CartScreen = ({ match, history, location }) => {
     const quantityCount = location.search ? Number(location.search.split('=')[1]) : 1;
     const dispatch = useDispatch();
     const { cart } = useSelector(state => state.shoppingCart);
-
+    const { accountLogin } = useSelector(state => state.accountLogin);
     const checkoutHandler = () => {
+        if (accountLogin) {
 
+        } else {
+            history.push('/profile/signin');
+        }
     };
 
     const removeProductFromCartHandler = (id) => {
@@ -27,7 +31,7 @@ const CartScreen = ({ match, history, location }) => {
             dispatch(addProductToCart(productId, quantityCount));
             history.push('/cart');
         }
-    }, [dispatch, productId, quantityCount, history]);
+    }, [dispatch, productId, quantityCount, accountLogin, history]);
     return (
         <Row>
             <Col md={8}>
