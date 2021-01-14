@@ -43,6 +43,7 @@ const RegisterScreen = ({ history }) => {
                                 <Form.Group controlId='firstname'>
                                     <Form.Label>First Name</Form.Label>
                                     <FormControl
+                                        required
                                         type='name'
                                         placeholder='Enter First Name'
                                         value={firstName}
@@ -54,6 +55,7 @@ const RegisterScreen = ({ history }) => {
                                 <Form.Group controlId='lastname'>
                                     <Form.Label>Last Name</Form.Label>
                                     <FormControl
+                                        required
                                         type='name'
                                         placeholder='Enter Last Name'
                                         value={lastName}
@@ -65,6 +67,7 @@ const RegisterScreen = ({ history }) => {
                         <Form.Group controlId='email'>
                             <Form.Label>Email Address</Form.Label>
                             <FormControl
+                                required
                                 type='email'
                                 placeholder='Enter Email'
                                 value={email}
@@ -83,6 +86,7 @@ const RegisterScreen = ({ history }) => {
                         <Form.Group controlId='password2'>
                             <Form.Label>Confirm Password</Form.Label>
                             <FormControl
+                                required
                                 type='password'
                                 placeholder='Re-enter Password'
                                 value={password2}

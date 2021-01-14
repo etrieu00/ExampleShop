@@ -16,6 +16,8 @@ import {
     accountSignInReducer,
     accountSignOutReducer,
     accountCreateReducer,
+    accountReadReducer,
+    accountUpdateReducer,
 } from './reducers/accountReducers';
 import {
     shoppingCartReducer
@@ -31,6 +33,8 @@ const reducer = combineReducers({
     accountLogin: accountSignInReducer,
     accountSignOut: accountSignOutReducer,
     accountCreate: accountCreateReducer,
+    accountProfile: accountReadReducer,
+    accountProfileUpdate: accountUpdateReducer,
 });
 
 const cartFromStorage = localStorage.getItem('shoppingCart')
@@ -39,9 +43,13 @@ const cartFromStorage = localStorage.getItem('shoppingCart')
 const accountFromStorage = localStorage.getItem('accountInfo')
     ? JSON.parse(localStorage.getItem('accountInfo'))
     : null;
+const accountProfileFromStorage = localStorage.getItem('accountProfile')
+    ? JSON.parse(localStorage.getItem('accountProfile'))
+    : null;
 const initialState = {
     shoppingCart: { cart: cartFromStorage },
     accountLogin: { accountLogin: accountFromStorage },
+    accountProfile: { accountProfile: accountProfileFromStorage }
 };
 
 const middleware = [thunk];

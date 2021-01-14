@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import { Nav, Tab, Row, Col } from 'react-bootstrap';
 import AccountTab from '../components/tabs/AccountTab';
 import ShippingInformationTab from '../components/tabs/ShippingInformationTab';
 import NotificationTab from '../components/tabs/NotificationTab';
 import PurchaseHistoryTab from '../components/tabs/PurchaseHistoryTab';
+const ProfileScreen = ({ history }) => {
+    const dispatch = useDispatch();
+    const { accountLogin } = useSelector(state => state.accountLogin);
+    useEffect(() => {
+        if (accountLogin) {
 
-const ProfileScreen = () => {
+        } else {
+            history.push('/profile/signin');
+        }
+    }, [history, dispatch, accountLogin]);
     return (
         <Tab.Container defaultActiveKey='account' >
             <Row>
