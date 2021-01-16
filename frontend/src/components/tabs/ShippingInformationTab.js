@@ -1,13 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import { Form, FormControl, Button, Row, Col } from 'react-bootstrap';
 import Message from '../messages/Message';
-const ShippingInformationTab = ({ submitAddress, addr, message, variant }) => {
-    const [address, setAddress] = useState(addr.address ? addr.address : '');
-    const [address2, setAddress2] = useState(addr.address2 ? addr.address2 : '');
-    const [city, setCity] = useState(addr.city ? addr.city : '');
-    const [county, setCounty] = useState(addr.county ? addr.county : '');
-    const [country, setCountry] = useState(addr.country ? addr.country : '');
-    const [zip, setZip] = useState(addr.zip ? addr.zip : '');
+import { readShippingInfo } from '../../redux/actions/shoppingActions';
+const ShippingInformationTab = ({ submitAddress, message, variant }) => {
+    const dispatch = useDispatch();
+    const { shippingInfo } = useSelector(state => state.shippingInfo);
+    const { success } = useSelector(state => state.shippingInfoUpdate);
+    const [address, setAddress] = useState(shippingInfo ? shippingInfo.address : '');
+    const [address2, setAddress2] = useState(shippingInfo ? shippingInfo.address2 : '');
+    const [city, setCity] = useState(shippingInfo ? shippingInfo.city : '');
+    const [county, setCounty] = useState(shippingInfo ? shippingInfo.county : '');
+    const [country, setCountry] = useState(shippingInfo ? shippingInfo.country : '');
+    const [zip, setZip] = useState(shippingInfo ? shippingInfo.zip : '');
+
+    useEffect(() => {
+        if (shippingInfo) {
+            setAddress(shippingInfo.address);
+            setAddress2(shippingInfo.address2);
+            setCity(shippingInfo.city);
+            setCounty(shippingInfo.county);
+            setCountry(shippingInfo.country);
+            setZip(shippingInfo.zip);
+        } else {
+            dispatch(readShippingInfo());
+        }
+    }, [dispatch, shippingInfo, success]);
 
     return (
         <>
@@ -97,7 +115,6 @@ const ShippingInformationTab = ({ submitAddress, addr, message, variant }) => {
 };
 
 ShippingInformationTab.defaultProps = {
-    addr: {},
     message: '',
 };
 export default ShippingInformationTab;

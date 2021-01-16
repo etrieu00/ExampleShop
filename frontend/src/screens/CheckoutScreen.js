@@ -1,21 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, Button, Tab, Nav, ListGroup } from 'react-bootstrap';
 import ConfirmOrderTab from '../components/tabs/OrderTab';
 import ShippingInformationTab from '../components/tabs/ShippingInformationTab';
+import { readShippingInfo, updateShippingInfo } from '../redux/actions/shoppingActions';
 
 const CheckoutScreen = () => {
-    const tabs = ['order', 'shipping', 'payment', 'summary'];
+    const dispatch = useDispatch();
+    const { shippingInfo } = useSelector(state => state.shippingInfo);
+    const tabs = ['Order', 'Shipping', 'Payment', 'Status'];
     const [paid, setPaid] = useState(false);
     const [tab, setTab] = useState(paid ? 3 : 0);
     const [confirmed, setConfirmed] = useState([]);
-    const [address, setAddress] = useState({});
+    const [address, setAddress] = useState(shippingInfo);
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
 
     const confirmationHandler = () => {
         if (tab === 1) {
-            setError(Object.keys(address).length === 0 ? 'Address required' : '');
-            if (Object.keys(address).length !== 0) {
+            setError(!address || Object.keys(address).length === 0 ? 'Address required' : '');
+            if (address && Object.keys(address).length !== 0) {
                 setTab(tab + 1);
                 setConfirmed(confirmed.indexOf(tabs[tab]) !== -1 ? [...confirmed] : [...confirmed, tabs[tab]]);
             }
@@ -26,9 +30,17 @@ const CheckoutScreen = () => {
         }
     };
 
+    useEffect(() => {
+        if (shippingInfo) {
+            setAddress(shippingInfo);
+        } else {
+            dispatch(readShippingInfo());
+        }
+    }, [dispatch, shippingInfo]);
+
     const submitAddressHandler = (e, address) => {
         e.preventDefault();
-        setAddress(address);
+        dispatch(updateShippingInfo(address));
         setMessage('Address Information updated');
     };
 
@@ -39,38 +51,38 @@ const CheckoutScreen = () => {
     return (
         <div>
             <Tab.Container
-                defaultActiveKey={paid ? 'summary' : 'order'}
+                defaultActiveKey={paid ? 'Status' : 'Order'}
                 activeKey={tabs[tab]}>
                 <Row>
                     <Col md={4}>
                         <ListGroup variant='flush'>
                             <ListGroup.Item>
-                                <h2>Checkout</h2>
+                                <h2>{tabs[tab]}</h2>
                             </ListGroup.Item>
                             <ListGroup.Item>
                                 <Nav variant='pills' className='flex-column' >
                                     <Nav.Item>
                                         <Nav.Link
-                                            id='order'
-                                            eventKey='order'
+                                            id='Order'
+                                            eventKey='Order'
                                             onClick={() => setTab(0)}
                                             disabled={paid}>
                                             <strong>Confirm Order</strong>
                                         </Nav.Link>
                                         <Nav.Link
-                                            eventKey='shipping'
-                                            disabled={confirmed.indexOf('order') === -1 || paid}
+                                            eventKey='Shipping'
+                                            disabled={confirmed.indexOf('Order') === -1 || paid}
                                             onClick={() => setTab(1)}>
                                             <strong>Shipping</strong>
                                         </Nav.Link>
                                         <Nav.Link
-                                            eventKey='payment'
-                                            disabled={confirmed.indexOf('shipping') === -1 || paid}
+                                            eventKey='Payment'
+                                            disabled={confirmed.indexOf('Shipping') === -1 || paid}
                                             onClick={() => setTab(2)}>
                                             <strong>Payment</strong>
                                         </Nav.Link>
                                         <Nav.Link
-                                            eventKey='summary'
+                                            eventKey='Status'
                                             disabled={confirmed.length !== 3}>
                                             <strong>Order Status</strong>
                                         </Nav.Link>
@@ -109,20 +121,20 @@ const CheckoutScreen = () => {
                     </Col>
                     <Col md={{ span: 6, offset: 1 }}>
                         <Tab.Content>
-                            <Tab.Pane eventKey='order'>
+                            <Tab.Pane eventKey='Order'>
                                 <ConfirmOrderTab />
                             </Tab.Pane>
-                            <Tab.Pane eventKey='shipping'>
+                            <Tab.Pane eventKey='Shipping'>
                                 <ShippingInformationTab
-                                    addr={address}
+                                    addr={shippingInfo}
                                     submitAddress={submitAddressHandler}
                                     message={message || error}
                                     variant={message ? 'success' : 'danger'} />
                             </Tab.Pane>
-                            <Tab.Pane eventKey='payment'>
-                                <h1>payment</h1>
+                            <Tab.Pane eventKey='Payment'>
+                                <h1>Payment</h1>
                             </Tab.Pane>
-                            <Tab.Pane eventKey='summary'>
+                            <Tab.Pane eventKey='Status'>
 
                             </Tab.Pane>
                         </Tab.Content>

@@ -3,6 +3,12 @@ import {
     SHOPPING_ADD,
     SHOPPING_REMOVE,
     SHOPPING_REMOVE_ALL,
+    READ_SHIPPING_INFO_REQUEST,
+    READ_SHIPPING_INFO_SUCCESS,
+    READ_SHIPPING_INFO_FAIL,
+    UPDATE_SHIPPING_INFO_REQUEST,
+    UPDATE_SHIPPING_INFO_SUCCESS,
+    UPDATE_SHIPPING_INFO_FAIL,
 } from '../constants/shoppingConstants';
 
 export const addProductToCart = (id, quantity) => async (dispatch, getState) => {
@@ -38,5 +44,44 @@ export const removeAllProductsFromCart = () => async (dispatch) => {
     });
 
     // Remove from actual backend
-    localStorage.setItem('shoppingCart', JSON.stringify([]));
+    localStorage.removeItem('shoppingCart');
+};
+
+export const readShippingInfo = () => async (dispatch) => {
+    try {
+        dispatch({
+            type: READ_SHIPPING_INFO_REQUEST,
+        });
+        // test until backend is implemented
+        const shippingInfo = localStorage.getItem('shippingInfo')
+            ? JSON.parse(localStorage.getItem('shippingInfo'))
+            : null;
+        dispatch({
+            type: READ_SHIPPING_INFO_SUCCESS,
+            payload: shippingInfo,
+        });
+    } catch (error) {
+        dispatch({
+            type: READ_SHIPPING_INFO_FAIL,
+            payload: 'Failed to read shipping info'
+        });
+    }
+};
+
+export const updateShippingInfo = (address) => async (dispatch) => {
+    try {
+        dispatch({
+            type: UPDATE_SHIPPING_INFO_REQUEST,
+        });
+        // test until backend is implemented
+        localStorage.setItem('shippingInfo', JSON.stringify(address));
+        dispatch({
+            type: UPDATE_SHIPPING_INFO_SUCCESS,
+        });
+    } catch (error) {
+        dispatch({
+            type: UPDATE_SHIPPING_INFO_FAIL,
+            payload: 'Failed to update shipping info',
+        });
+    }
 };

@@ -5,20 +5,22 @@ import AccountTab from '../components/tabs/AccountTab';
 import ShippingInformationTab from '../components/tabs/ShippingInformationTab';
 import NotificationTab from '../components/tabs/NotificationTab';
 import PurchaseHistoryTab from '../components/tabs/PurchaseHistoryTab';
+import { updateShippingInfo } from '../redux/actions/shoppingActions';
 const ProfileScreen = ({ history }) => {
     const dispatch = useDispatch();
     const { accountLogin } = useSelector(state => state.accountLogin);
+    const { success } = useSelector(state => state.shippingInfoUpdate);
     useEffect(() => {
         if (accountLogin) {
 
         } else {
             history.push('/profile/signin');
         }
-    }, [history, dispatch, accountLogin]);
+    }, [history, dispatch, accountLogin, success]);
 
     const submitAddressHandler = (e, address) => {
         e.preventDefault();
-        console.log(address);
+        dispatch(updateShippingInfo(address));
     };
 
     return (
@@ -51,6 +53,8 @@ const ProfileScreen = ({ history }) => {
                         </Tab.Pane>
                         <Tab.Pane eventKey='shipping'>
                             <ShippingInformationTab
+                                variant={success && 'success'}
+                                message={success && 'Address Information Updated'}
                                 submitAddress={submitAddressHandler} />
                         </Tab.Pane>
                         <Tab.Pane eventKey='history'>
