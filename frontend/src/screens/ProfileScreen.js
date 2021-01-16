@@ -15,6 +15,12 @@ const ProfileScreen = ({ history }) => {
             history.push('/profile/signin');
         }
     }, [history, dispatch, accountLogin]);
+
+    const submitAddressHandler = (e, address) => {
+        e.preventDefault();
+        console.log(address);
+    };
+
     return (
         <Tab.Container defaultActiveKey='account' >
             <Row>
@@ -44,7 +50,8 @@ const ProfileScreen = ({ history }) => {
                             <NotificationTab />
                         </Tab.Pane>
                         <Tab.Pane eventKey='shipping'>
-                            <ShippingInformationTab />
+                            <ShippingInformationTab
+                                submitAddress={submitAddressHandler} />
                         </Tab.Pane>
                         <Tab.Pane eventKey='history'>
                             <PurchaseHistoryTab />

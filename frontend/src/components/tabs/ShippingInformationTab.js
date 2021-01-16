@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
 import { Form, FormControl, Button, Row, Col } from 'react-bootstrap';
-const BillingPaymentTab = () => {
-    const [address, setAddress] = useState('');
-    const [address2, setAddress2] = useState('');
-    const [city, setCity] = useState('');
-    const [county, setCounty] = useState('');
-    const [country, setCountry] = useState('');
-    const [zip, setZip] = useState('');
-
-    const submitHandler = (e) => {
-        e.preventDefault();
-    };
+import Message from '../messages/Message';
+const ShippingInformationTab = ({ submitAddress, addr, message, variant }) => {
+    const [address, setAddress] = useState(addr.address ? addr.address : '');
+    const [address2, setAddress2] = useState(addr.address2 ? addr.address2 : '');
+    const [city, setCity] = useState(addr.city ? addr.city : '');
+    const [county, setCounty] = useState(addr.county ? addr.county : '');
+    const [country, setCountry] = useState(addr.country ? addr.country : '');
+    const [zip, setZip] = useState(addr.zip ? addr.zip : '');
 
     return (
         <>
             <h3>Shipping Information</h3>
-            <Form onSubmit={submitHandler}>
+            {message && <Message variant={variant}>{message}</Message>}
+            <Form onSubmit={(e) => submitAddress(e, { address, address2, city, county, country, zip })}>
                 <Form.Group controlId='address'>
                     <Form.Label>Street Address</Form.Label>
                     <FormControl
@@ -27,7 +25,7 @@ const BillingPaymentTab = () => {
                     </FormControl>
                 </Form.Group>
                 <Form.Group controlId='address2'>
-                    <Form.Label>Street Address Line2</Form.Label>
+                    <Form.Label>Street Address Line 2</Form.Label>
                     <FormControl
                         type='text'
                         placeholder='Enter Street Address Line 2'
@@ -87,7 +85,10 @@ const BillingPaymentTab = () => {
                         </Form.Group>
                     </Col>
                 </Row>
-                <Button className='my-3' type='submit' variant='primary'>
+                <Button
+                    className='my-3'
+                    type='submit'
+                    variant='primary'>
                     Update information
                 </Button>
             </Form >
@@ -95,4 +96,8 @@ const BillingPaymentTab = () => {
     );
 };
 
-export default BillingPaymentTab;
+ShippingInformationTab.defaultProps = {
+    addr: {},
+    message: '',
+};
+export default ShippingInformationTab;

@@ -17,7 +17,7 @@ const CartScreen = ({ match, history, location }) => {
     const { accountLogin } = useSelector(state => state.accountLogin);
     const checkoutHandler = () => {
         if (accountLogin) {
-
+            history.push('/checkout');
         } else {
             history.push('/profile/signin');
         }
@@ -38,32 +38,34 @@ const CartScreen = ({ match, history, location }) => {
                 <h3>Shopping Cart</h3>
                 {cart.length === 0
                     ? <Message variant='light'>Your cart is empty</Message>
-                    : cart.map(product => (
-                        <ListGroup.Item key={product.id}>
-                            <Row className="align-items-center">
-                                <Col xs={2} md={2}>
-                                    <Image src={product.image} alt={product.name} fluid rounded />
-                                </Col>
-                                <Col xs={2} md={3}>
-                                    <Link className='text-dark' to={`/product/${product.id}`} key={product.id}><h5>{product.name}</h5></Link>
-                                </Col>
-                                <Col xs={4} md={3}>
-                                    <h5>$ {product.price}</h5>
-                                </Col>
-                                <Col xs={2} md={2}>
-                                    <h5>{product.quantity}</h5>
-                                </Col>
-                                <Col xs={1} md={2}>
-                                    <Button
-                                        type='button'
-                                        variant='danger'
-                                        onClick={() => removeProductFromCartHandler(product.id)}>
-                                        <i className='fas fa-trash' />
-                                    </Button>
-                                </Col>
-                            </Row>
-                        </ListGroup.Item>
-                    ))
+                    : <ListGroup>
+                        {cart.map(product => (
+                            <ListGroup.Item key={product.id}>
+                                <Row className="align-items-center">
+                                    <Col xs={2} md={2}>
+                                        <Image src={product.image} alt={product.name} fluid rounded />
+                                    </Col>
+                                    <Col xs={2} md={3}>
+                                        <Link className='text-dark' to={`/product/${product.id}`} key={product.id}><h5>{product.name}</h5></Link>
+                                    </Col>
+                                    <Col xs={4} md={3}>
+                                        <h5>$ {product.price}</h5>
+                                    </Col>
+                                    <Col xs={2} md={2}>
+                                        <h5>{product.quantity}</h5>
+                                    </Col>
+                                    <Col xs={1} md={2}>
+                                        <Button
+                                            type='button'
+                                            variant='danger'
+                                            onClick={() => removeProductFromCartHandler(product.id)}>
+                                            <i className='fas fa-trash' />
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </ListGroup.Item>
+                        ))}
+                    </ListGroup>
                 }
             </Col>
             <Col md={4}>
@@ -97,6 +99,7 @@ const CartScreen = ({ match, history, location }) => {
                         <Row>
                             <Col className='m-auto' md={10}>
                                 <Button
+                                    disabled={cart.length === 0}
                                     type='button'
                                     className='btn-block'
                                     onClick={checkoutHandler}>

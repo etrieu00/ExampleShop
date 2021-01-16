@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form, FormControl, Button } from 'react-bootstrap';
 import { accountRead, accountUpdate } from '../../redux/actions/accountActions';
 import Message from '../messages/Message';
+
 const AccountTab = () => {
     const dispatch = useDispatch();
     const { accountProfile } = useSelector(state => state.accountProfile);
@@ -50,7 +51,7 @@ const AccountTab = () => {
         } else {
             dispatch(accountRead());
         }
-    }, [dispatch, accountProfile]);
+    }, [dispatch, accountProfile, success, error]);
 
     return (
         <>
