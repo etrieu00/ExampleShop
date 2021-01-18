@@ -78,6 +78,10 @@ export const updateShippingInfo = (address) => async (dispatch) => {
         dispatch({
             type: UPDATE_SHIPPING_INFO_SUCCESS,
         });
+        dispatch({
+            type: READ_SHIPPING_INFO_SUCCESS,
+            payload: address,
+        });
     } catch (error) {
         dispatch({
             type: UPDATE_SHIPPING_INFO_FAIL,

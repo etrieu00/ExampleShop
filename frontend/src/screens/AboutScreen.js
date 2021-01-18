@@ -10,7 +10,6 @@ const AboutScreen = () => {
                         <Row className="justify-content-md-center">
                             <Image
                                 src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/512px-React-icon.svg.png'
-                                stretch
                                 height={200} />
                         </Row>
                     </Col>
@@ -30,7 +29,6 @@ const AboutScreen = () => {
                         <Row className="justify-content-md-center">
                             <Image
                                 src='https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg'
-                                stretch
                                 height={200} />
                         </Row>
                     </Col>
@@ -50,7 +48,6 @@ const AboutScreen = () => {
                         <Row className="justify-content-md-center">
                             <Image
                                 src='https://nakedsecurity.sophos.com/wp-content/uploads/sites/2/2017/01/mongodb.png?resize=780,408'
-                                stretch
                                 height={200} />
                         </Row>
                     </Col>
@@ -66,7 +63,6 @@ const AboutScreen = () => {
                         <Row className="justify-content-md-center">
                             <Image
                                 src='https://www.docker.com/sites/default/files/d8/styles/role_icon/public/2019-07/Moby-logo.png?itok=sYH_JEaJ'
-                                stretch
                                 height={200} />
                         </Row>
                     </Col>
@@ -85,7 +81,6 @@ const AboutScreen = () => {
                         <Row className="justify-content-md-center">
                             <Image
                                 src='https://symbols.getvecta.com/stencil_89/48_nginx-icon.4056e667e9.svg'
-                                stretch
                                 height={200} />
                         </Row>
                     </Col>

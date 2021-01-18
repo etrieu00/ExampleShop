@@ -1,0 +1,7 @@
+FROM node:15.5.1-alpine3.10
+WORKDIR /app
+COPY ./package*.json /app/
+RUN npm install package.json
+COPY ./products-service/ /app/products-service
+EXPOSE 4000
+CMD ["npm", "run", "start-products-service"]
