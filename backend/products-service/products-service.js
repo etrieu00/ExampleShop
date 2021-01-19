@@ -1,9 +1,10 @@
 import express from 'express';
+import connectMyDB from './database/db.js';
 
 const SERVICE_NAME = process.env.SERVICE_NAME || 'Service'
 const PORT = process.env.SERVER_PORT || 80;
 
-// connectMyDB();
+connectMyDB();
 
 const app = express();
 app.use(express.json());
@@ -13,7 +14,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api', (req, res) => {
-    res.send('no work?');
+    res.send(`mongo: ${process.env.DATABASE_URI}`);
 });
 
 app.listen(
