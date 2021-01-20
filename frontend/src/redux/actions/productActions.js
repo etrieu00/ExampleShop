@@ -1,4 +1,4 @@
-import products from '../../data/products';
+import axios from 'axios';
 import {
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESS,
@@ -20,7 +20,7 @@ import {
 export const listAllProducts = () => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST });
-        const data = products;
+        const { data } = await axios.get('/api/v1/products');
         dispatch({
             type: PRODUCT_LIST_SUCCESS,
             payload: data,
@@ -32,7 +32,7 @@ export const listAllProducts = () => async (dispatch) => {
         });
     }
 }
-export const createProduct = () => async (dispatch, getState) => {
+export const createProduct = () => async (dispatch) => {
     try {
         dispatch({
             type: PRODUCT_CREATE_REQUEST
@@ -60,11 +60,7 @@ export const createProduct = () => async (dispatch, getState) => {
 export const readProduct = (id) => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_READ_REQUEST });
-
-        // Do things here to read the data 
-
-        // Test
-        const data = products[id - 1];
+        const { data } = await axios.get(`/api/v1/products/${id}`);
         dispatch({
             type: PRODUCT_READ_SUCCESS,
             payload: data

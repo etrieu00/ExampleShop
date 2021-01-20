@@ -10,7 +10,6 @@ const ShopScreen = () => {
     const dispatch = useDispatch();
     const productsList = useSelector(state => state.productsList);
     const { loading, error, products } = productsList;
-
     useEffect(() => {
         dispatch(listAllProducts());
     }, [dispatch]);

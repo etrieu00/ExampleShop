@@ -7,7 +7,6 @@ const productSchema = mongoose.Schema({
     },
     images: [{
         type: String,
-        required: true
     }],
     description: {
         type: String,
@@ -15,14 +14,9 @@ const productSchema = mongoose.Schema({
     },
     categories: [{
         type: String,
-        required: true,
     }],
     price: {
         type: Number,
-        required: true,
-    },
-    inStock: {
-        type: Boolean,
         required: true,
     },
     countStock: {

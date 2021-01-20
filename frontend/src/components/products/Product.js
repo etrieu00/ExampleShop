@@ -18,7 +18,7 @@ const Product = ({ product }) => {
                     $ {product.price}
                 </Card.Text>
                 <Card.Text as='h6'>
-                    <i className='fas fa-shopping-bag' /> {product.views}
+                    <i className='fas fa-shopping-bag' /> {product.countStock}
                 </Card.Text>
             </Card.Body>
         </Card>

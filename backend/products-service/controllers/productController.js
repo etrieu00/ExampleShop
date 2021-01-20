@@ -1,14 +1,13 @@
 import asynch from 'express-async-handler';
-import Product from '../database/models/productModels';
+import Product from '../database/models/productModels.js';
 
-const createProduct = asyncHandler(async (req, res) => {
+const createProduct = asynch(async (req, res) => {
     const {
         name,
         images,
         description,
         categories,
         price,
-        inStock,
         countStock,
     } = req.body;
     const product = await new Product({
@@ -17,7 +16,6 @@ const createProduct = asyncHandler(async (req, res) => {
         description: description || '',
         categories: categories || [],
         price: price || 0,
-        inStock: inStock || false,
         countStock: countStock || 0,
     });
     const createdProduct = await product.save();
@@ -47,7 +45,7 @@ const readProductById = asynch(async (req, res) => {
     }
 });
 
-const updateProduct = asyncHandler(async (req, res) => {
+const updateProduct = asynch(async (req, res) => {
     const product = await Product.findById(req.params.id);
     const {
         name,
@@ -55,7 +53,6 @@ const updateProduct = asyncHandler(async (req, res) => {
         description,
         categories,
         price,
-        inStock,
         countStock,
     } = req.body;
     if (product) {
@@ -64,7 +61,6 @@ const updateProduct = asyncHandler(async (req, res) => {
         product.description = description;
         product.images = images;
         product.categories = categories;
-        product.inStock = inStock;
         product.countStock = countStock;
         const updatedProduct = await product.save();
         res.status(201).json({
@@ -77,7 +73,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     }
 });
 
-const deleteProduct = asyncHandler(async (req, res) => {
+const deleteProduct = asynch(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {
         const removedProduct = await product.remove();

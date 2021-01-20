@@ -45,7 +45,6 @@ export const productCreateReducer = (state = {}, action) => {
         case PRODUCT_CREATE_REQUEST:
             return {
                 loading: true,
-                success: false,
             };
         case PRODUCT_CREATE_SUCCESS:
             return {
