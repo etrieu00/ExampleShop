@@ -17,7 +17,6 @@ const products = [
             '/images/grape/1.png',
             '/images/grape/2.png',
             '/images/grape/3.png',
-            '/images/grape/4.png',
         ],
         description: 'Juicies grapes from the mountains of Russia',
         categories: ['Fruit', 'Russia'],

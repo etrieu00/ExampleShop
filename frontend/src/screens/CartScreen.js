@@ -40,13 +40,13 @@ const CartScreen = ({ match, history, location }) => {
                     ? <Message variant='light'>Your cart is empty</Message>
                     : <ListGroup>
                         {cart.map(product => (
-                            <ListGroup.Item key={product.id}>
+                            <ListGroup.Item key={product._id}>
                                 <Row className="align-items-center">
                                     <Col xs={2} md={2}>
                                         <Image src={product.image} alt={product.name} fluid rounded />
                                     </Col>
                                     <Col xs={2} md={3}>
-                                        <Link className='text-dark' to={`/product/${product.id}`} key={product.id}><h5>{product.name}</h5></Link>
+                                        <Link className='text-dark' to={`/product/${product._id}`} key={product._id}><h5>{product.name}</h5></Link>
                                     </Col>
                                     <Col xs={4} md={3}>
                                         <h5>$ {product.price}</h5>
@@ -58,7 +58,7 @@ const CartScreen = ({ match, history, location }) => {
                                         <Button
                                             type='button'
                                             variant='danger'
-                                            onClick={() => removeProductFromCartHandler(product.id)}>
+                                            onClick={() => removeProductFromCartHandler(product._id)}>
                                             <i className='fas fa-trash' />
                                         </Button>
                                     </Col>

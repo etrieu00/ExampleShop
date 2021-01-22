@@ -34,7 +34,7 @@ const ProductScreen = ({ match, history }) => {
                                         product.images.map((i, index) => (
                                             <Carousel.Item key={index} >
                                                 <Row className="justify-content-md-center">
-                                                    <Image className='md-auto' height={500} key={index} src={i} alt={product.name} stretch='true' />
+                                                    <Image className='md-auto' key={index} src={i} alt={product.name} stretch='true' />
                                                 </Row>
                                             </Carousel.Item>
                                         ))

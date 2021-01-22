@@ -1,4 +1,4 @@
-import products from '../../data/products';
+import axios from 'axios';
 import {
     SHOPPING_ADD,
     SHOPPING_REMOVE,
@@ -13,20 +13,25 @@ import {
 
 export const addProductToCart = (id, quantity) => async (dispatch, getState) => {
     // Get data from actual back end
-    const product = products[id - 1];
-    dispatch({
-        type: SHOPPING_ADD,
-        payload: {
-            id: product._id,
-            name: product.name,
-            category: product.category,
-            price: product.price,
-            image: product.images[0],
-            quantity: quantity,
-        }
-    });
-    //Add to cart on actual back end
-    localStorage.setItem('shoppingCart', JSON.stringify(getState().shoppingCart.cart));
+    try {
+        const { data: product } = await axios.get(`/api/v1/products/${id}`);
+        dispatch({
+            type: SHOPPING_ADD,
+            payload: {
+                _id: product._id,
+                name: product.name,
+                category: product.category,
+                price: product.price,
+                image: product.images[0],
+                quantity: quantity,
+            }
+        });
+        //Add to cart on actual back end
+        localStorage.setItem('shoppingCart', JSON.stringify(getState().shoppingCart.cart));
+    } catch (error) {
+
+    }
+
 };
 
 export const removeProductFromCart = (id) => async (dispatch, getState) => {

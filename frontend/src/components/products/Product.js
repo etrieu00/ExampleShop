@@ -4,14 +4,14 @@ import { Card } from 'react-bootstrap';
 
 const Product = ({ product }) => {
     return (
-        <Card className='my-2 p-2 rounded' text='dark'>
-            <Card.Header as='h3'>
+        <Card className='my-2 p-2 rounded ' text='dark'>
+            <Card.Header as='h4'>
                 <Link to={`/product/${product._id}`} className='text-dark'>
                     {product.name}
                 </Link>
             </Card.Header>
             <Link to={`/product/${product._id}`}>
-                <Card.Img height={200} src={product.images[0]} variant='top' />
+                <Card.Img src={product.images[0]} variant='top' />
             </Link>
             <Card.Body className="mr-auto">
                 <Card.Text as='h5' >

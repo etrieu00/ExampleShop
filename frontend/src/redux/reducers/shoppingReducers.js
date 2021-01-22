@@ -14,11 +14,11 @@ export const shoppingCartReducer = (state = { cart: [] }, action) => {
     switch (action.type) {
         case SHOPPING_ADD:
             const product = action.payload;
-            const existingItem = state.cart.find(item => item.id === product.id);
+            const existingItem = state.cart.find(item => item._id === product._id);
             if (existingItem) {
                 return {
                     cart: state.cart.map(item => {
-                        if (item.id === existingItem.id) {
+                        if (item._id === existingItem._id) {
                             return {
                                 ...item,
                                 quantity: item.quantity + product.quantity
@@ -35,7 +35,7 @@ export const shoppingCartReducer = (state = { cart: [] }, action) => {
             }
         case SHOPPING_REMOVE:
             return {
-                cart: state.cart.filter(product => product.id !== action.payload),
+                cart: state.cart.filter(product => product._id !== action.payload),
             };
         case SHOPPING_REMOVE_ALL:
             return {

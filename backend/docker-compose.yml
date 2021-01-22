@@ -1,27 +1,39 @@
 version: '3.8'
 
 services:
+  reverse-proxy:
+    container_name: nginx-proxy
+    restart: unless-stopped
+    image: nginx:1.19.6
+    ports:
+      - "80:80"
+    volumes:
+      - "./nginx-config/nginx.conf:/etc/nginx/nginx.conf"
+      - "./images/:/var/www/images"
+    depends_on: 
+      - products-service
   products-service:
     container_name: products-service
     build:
       context: .
       dockerfile: Dockerfile.products
+    restart: unless-stopped
     environment:
       - SERVER_PORT=4000
       - DATABASE_URI=mongodb://products-database:27017/products
     volumes:
       - "./products-service/:/app/products-service"
-    ports:
-      - "4000:4000"
+    expose:
+      - "4000"
     depends_on:
       - products-database
   products-database:
     container_name: products-database
     image: mongo:3.6.21
-    restart: always
+    restart: unless-stopped
     environment:
       - MONGO_INITDB_DATABASE=products
-    ports:
-      - "27017:27017"
+    expose:
+      - "27017"
     volumes:
       - "./databases/mongodb/db/:/data/db"
