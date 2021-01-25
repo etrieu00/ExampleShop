@@ -20,7 +20,7 @@ import {
 export const listAllProducts = () => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST });
-        const { data } = await axios.get('/api/v1/products');
+        const { data } = await axios.get('/api/v1/catalog');
         dispatch({
             type: PRODUCT_LIST_SUCCESS,
             payload: data,
@@ -60,7 +60,7 @@ export const createProduct = () => async (dispatch) => {
 export const readProduct = (id) => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_READ_REQUEST });
-        const { data } = await axios.get(`/api/v1/products/${id}`);
+        const { data } = await axios.get(`/api/v1/catalog/${id}`);
         dispatch({
             type: PRODUCT_READ_SUCCESS,
             payload: data

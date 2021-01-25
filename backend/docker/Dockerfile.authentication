@@ -1,0 +1,8 @@
+FROM node:15.5.1-alpine3.10
+WORKDIR /app
+COPY ../package*.json /app/
+RUN npm install package.json
+COPY ../services/authentication-service/ /app/authentication-service
+COPY ../configs/.env /app/
+EXPOSE 4000
+CMD ["npm", "run", "start-authentication-service"]

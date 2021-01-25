@@ -53,7 +53,6 @@ export const readShippingInformationReducer = (state = { shippingInfo: {} }, act
                 loading: true,
             };
         case READ_SHIPPING_INFO_SUCCESS:
-            console.log(action.payload)
             return {
                 loading: false,
                 shippingInfo: action.payload,

@@ -5,7 +5,7 @@ import {
     readProductById,
     updateProduct,
     deleteProduct,
-} from '../controllers/productController.js';
+} from '../controllers/catalogController.js';
 
 const router = express.Router();
 router.route('/')

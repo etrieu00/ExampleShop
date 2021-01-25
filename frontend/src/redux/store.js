@@ -44,20 +44,17 @@ const reducer = combineReducers({
 const cartFromStorage = localStorage.getItem('shoppingCart')
     ? JSON.parse(localStorage.getItem('shoppingCart'))
     : [];
-const accountFromStorage = localStorage.getItem('accountInfo')
-    ? JSON.parse(localStorage.getItem('accountInfo'))
-    : null;
-const accountProfileFromStorage = localStorage.getItem('accountProfile')
-    ? JSON.parse(localStorage.getItem('accountProfile'))
+const accountFromStorage = localStorage.getItem('accountToken')
+    ? JSON.parse(localStorage.getItem('accountToken'))
     : null;
 const shippingInfoFromStorage = localStorage.getItem('shippingInfo')
-    ? JSON.parse(localStorage.getItem('shippingInfo'))
+    ? null
+    // ? JSON.parse(localStorage.getItem('shippingInfo'))
     : null;
 
 const initialState = {
     shoppingCart: { cart: cartFromStorage },
     accountLogin: { accountLogin: accountFromStorage },
-    accountProfile: { accountProfile: accountProfileFromStorage },
     shippingInfo: { shippingInfo: shippingInfoFromStorage },
 };
 

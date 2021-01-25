@@ -30,7 +30,7 @@ const createProduct = asynch(async (req, res) => {
     }
 });
 
-const readProducts = asynch(async (req, res) => {
+const readProducts = asynch(async (_, res) => {
     const products = await Product.find({});
     res.json(products);
 });

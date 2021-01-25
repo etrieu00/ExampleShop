@@ -13,7 +13,7 @@ const AccountTab = () => {
     const [email, setEmail] = useState(accountProfile ? accountProfile.email : '');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
-    const [updateSuccess, setUpdateSuccess] = useState(success);
+    const [updateSuccess, setUpdateSuccess] = useState(false);
     const [updateError, setUpdateError] = useState(false);
     const [mismatchPassword, setMismatchPassword] = useState(false);
 

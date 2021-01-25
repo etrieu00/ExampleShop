@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
     SIGN_IN_REQUEST,
     SIGN_IN_SUCCESS,
@@ -22,23 +23,22 @@ export const accountSignIn = (credentials) => async (dispatch) => {
         dispatch({
             type: SIGN_IN_REQUEST
         });
-        // Do things here to sign in
-        // test
         const { email, password } = credentials;
-        const tempAccount = localStorage.getItem('accountProfile')
-            ? JSON.parse(localStorage.getItem('accountProfile'))
-            : null;
-        const { email: tempEmail, password: tempPassword } = tempAccount;
-        if (email === tempEmail
-            && password === tempPassword) {
-            localStorage.setItem('accountInfo', JSON.stringify(credentials));
-        } else {
-            throw Error('Invalid Account');
-        }
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        };
+        const { data } = await axios.post(
+            '/api/v1/users/login',
+            { email, password },
+            config
+        );
         dispatch({
             type: SIGN_IN_SUCCESS,
-            payload: credentials,
+            payload: data,
         });
+        localStorage.setItem('accountToken', JSON.stringify(data));
     } catch (error) {
         dispatch({
             type: SIGN_IN_FAIL,
@@ -51,8 +51,7 @@ export const accountSignOut = () => async (dispatch) => {
     dispatch({
         type: SIGN_OUT_REQUEST
     });
-    //Do things here to sign out
-    localStorage.removeItem('accountInfo');
+    localStorage.removeItem('accountToken');
     dispatch({
         type: SIGN_IN_RESET,
     });
@@ -69,21 +68,25 @@ export const accountCreate = (account) => async (dispatch) => {
         dispatch({
             type: CREATE_ACCOUNT_REQUEST
         });
-        //Do things here to create account
-        // test
-        localStorage.setItem('accountProfile', JSON.stringify(account));
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        };
+        const { email, password } = account;
+        const { data } = await axios.post(
+            '/api/v1/users',
+            { email, password },
+            config
+        );
         dispatch({
             type: CREATE_ACCOUNT_SUCCESS,
-            payload: account,
+            payload: data,
         });
-        const credentials = {
-            email: account.email,
-            password: account.password,
-        };
-        localStorage.setItem('accountInfo', JSON.stringify(credentials));
+        localStorage.setItem('accountToken', JSON.stringify(data));
         dispatch({
             type: SIGN_IN_SUCCESS,
-            payload: credentials,
+            payload: data,
         });
     } catch (error) {
         dispatch({
@@ -98,16 +101,16 @@ export const accountRead = () => async (dispatch) => {
         dispatch({
             type: READ_ACCOUNT_REQUEST
         });
-        //Do things here to create account
+        //Do things here to read account
         // test
-        const { firstName, lastName, email } = JSON.parse(localStorage.getItem('accountProfile'));
+        const test = {
+            firstName: 'eric',
+            lastName: 't',
+            email: 'eh@gmail.com'
+        }
         dispatch({
             type: READ_ACCOUNT_SUCCESS,
-            payload: {
-                firstName,
-                lastName,
-                email
-            },
+            payload: test,
         });
     } catch (error) {
         dispatch({
@@ -122,20 +125,8 @@ export const accountUpdate = (accountInfo) => async (dispatch) => {
         dispatch({
             type: UPDATE_ACCOUNT_REQUEST
         });
-        //Do things here to create account
-        // test
-        if (accountInfo.password) {
-            localStorage.setItem('accountProfile', JSON.stringify(accountInfo));
-        } else {
-            const tempAccount = localStorage.getItem('accountProfile')
-                ? JSON.parse(localStorage.getItem('accountProfile'))
-                : null;
-            const updatedAccount = {
-                ...accountInfo,
-                password: tempAccount.password,
-            }
-            localStorage.setItem('accountProfile', JSON.stringify(updatedAccount));
-        }
+        // Do nothing for now
+        console.log('account updated');
         dispatch({
             type: UPDATE_ACCOUNT_SUCCESS,
         });
