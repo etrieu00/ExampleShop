@@ -3,5 +3,6 @@ WORKDIR /app
 COPY ../package*.json /app/
 RUN npm install package.json
 COPY ../services/catalog-service/ /app/catalog-service
+COPY ../services/utils/ /app/catalog-service/utils/
 EXPOSE 4000
 CMD ["npm", "run", "start-catalog-service"]

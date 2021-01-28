@@ -20,13 +20,11 @@ const createProduct = asynch(async (req, res) => {
     });
     const createdProduct = await product.save();
     if (createdProduct) {
-        res.status(201).json({
-            createdProduct,
-            message: 'Product created'
-        });
+        res.status(201)
+            .json(createdProduct);
     } else {
-        res.status(404);
-        throw new Error('Failed to create product');
+        res.status(404)
+            .json({ message: 'Failed to create product' });
     }
 });
 
@@ -38,10 +36,11 @@ const readProducts = asynch(async (_, res) => {
 const readProductById = asynch(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {
-        res.json(product);
+        res.status(200)
+            .json(product);
     } else {
-        res.status(404);
-        throw new Error('Product not found');
+        res.status(404)
+            .json({ message: 'Product not found' });
     }
 });
 
@@ -63,13 +62,11 @@ const updateProduct = asynch(async (req, res) => {
         product.categories = categories;
         product.countStock = countStock;
         const updatedProduct = await product.save();
-        res.status(201).json({
-            updatedProduct,
-            message: "Product has been updated"
-        });
+        res.status(201)
+            .json(updatedProduct);
     } else {
-        res.status(404);
-        throw new Error('Product not found');
+        res.status(404)
+            .json({ message: 'Product not found' });
     }
 });
 
@@ -77,13 +74,11 @@ const deleteProduct = asynch(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {
         const removedProduct = await product.remove();
-        res.json({
-            removedProduct,
-            message: 'Product removed'
-        });
+        res.status(202)
+            .json(removedProduct);
     } else {
-        res.status(404);
-        throw new Error('Product not found');
+        res.status(404)
+            .json({ message: 'Product not found' });
     }
 });
 

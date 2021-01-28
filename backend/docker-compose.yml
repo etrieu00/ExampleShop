@@ -1,6 +1,9 @@
 version: '3.8'
 
 services:
+###############################################################################
+# Reverse Proxy
+###############################################################################
   reverse-proxy:
     container_name: nginx-proxy
     restart: unless-stopped
@@ -27,6 +30,7 @@ services:
       - DATABASE_URI=mongodb://catalog-database:27017/Products
     volumes:
       - "./services/catalog-service/:/app/catalog-service"
+      - "./services/utils/:/app/catalog-service/utils/"
     expose:
       - "4000"
     depends_on:
@@ -56,6 +60,7 @@ services:
       - DATABASE_URI=mongodb://authentication-database:27017/User
     volumes:
       - "./services/authentication-service/:/app/authentication-service"
+      - "./services/utils/:/app/authentication-service/utils/"
     expose:
       - "4000"
     depends_on:
@@ -70,3 +75,33 @@ services:
       - "27017"
     volumes:
       - "./databases/mongodb/authentication-db/:/data/db"
+###############################################################################
+# Service for shopping
+###############################################################################
+  shopping-service: 
+    container_name: shopping-service
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.shopping
+    restart: unless-stopped
+    environment:
+      - SERVICE_NAME=Shopping
+      - SERVER_PORT=4000
+      - DATABASE_URI=mongodb://shopping-database:27017/User
+    volumes:
+      - "./services/shopping-service/:/app/shopping-service"
+      - "./services/utils/:/app/shopping-service/utils/"
+    expose:
+      - "4000"
+    depends_on:
+      - shopping-database
+  shopping-database:
+    container_name: shopping-database
+    image: mongo:3.6.21
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_DATABASE=Cart
+    expose:
+      - "27017"
+    volumes:
+      - "./databases/mongodb/shopping-db/:/data/db"

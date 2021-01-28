@@ -10,10 +10,10 @@ import {
 } from '../utils/authentication.js';
 const router = express.Router();
 router.route('/')
-    .post(createUser);
+    .post(createUser)
+    .put(authenticateUser, updateUser);
 router.route('/login')
     .post(readUser);
 router.route('/:id')
-    .put(authenticateUser, updateUser)
     .delete(authenticateUser, deleteUser);
 export default router;

@@ -3,6 +3,7 @@ WORKDIR /app
 COPY ../package*.json /app/
 RUN npm install package.json
 COPY ../services/authentication-service/ /app/authentication-service
+COPY ../services/utils/ /app/authentication-service/utils/
 COPY ../configs/.env /app/
 EXPOSE 4000
 CMD ["npm", "run", "start-authentication-service"]
