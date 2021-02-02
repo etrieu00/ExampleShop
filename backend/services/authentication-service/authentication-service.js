@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import connectMyDB from './database/db.js';
+import connectMyDB from './utils/mongodbConnecter.js';
 import authRoutes from './routes/authenticationRoutes.js';
 
 dotenv.config();

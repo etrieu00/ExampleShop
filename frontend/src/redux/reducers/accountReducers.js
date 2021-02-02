@@ -27,12 +27,12 @@ export const accountSignInReducer = (state = {}, action) => {
         case SIGN_IN_SUCCESS:
             return {
                 loading: false,
-                accountLogin: action.payload
+                accountToken: action.payload
             };
         case SIGN_IN_RESET:
             return {
                 loading: false,
-                accountLogin: null,
+                accountToken: null,
             };
         case SIGN_IN_FAIL:
             return {
@@ -68,7 +68,7 @@ export const accountCreateReducer = (state = {}, action) => {
         case CREATE_ACCOUNT_SUCCESS:
             return {
                 loading: false,
-                accountLogin: action.payload
+                accountToken: action.payload
             };
         case CREATE_ACCOUNT_FAIL:
             return {

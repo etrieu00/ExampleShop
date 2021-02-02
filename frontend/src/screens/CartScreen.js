@@ -1,64 +1,96 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ListGroup, Button, Row, Col, Image } from 'react-bootstrap';
+import { ListGroup, Button, Row, Col } from 'react-bootstrap';
 import Message from '../components/messages/Message';
+import Loader from '../components/loaders/Loader';
 import {
     addProductToCart,
+    readCart,
     removeProductFromCart,
-    // removeAllProductsFromCart,
+    removeAllProductsFromCart,
 } from '../redux/actions/shoppingActions';
 
 const CartScreen = ({ match, history, location }) => {
     const productId = match.params.id;
-    const quantityCount = location.search ? Number(location.search.split('=')[1]) : 1;
+    const productCount = location.search ? Number(location.search.split('=')[1]) : 1;
     const dispatch = useDispatch();
-    const { cart } = useSelector(state => state.shoppingCart);
-    const { accountLogin } = useSelector(state => state.accountLogin);
+    const { cart, success, loading, error } = useSelector(state => state.readFromCart);
+    const { accountToken } = useSelector(state => state.accountLogin);
     const checkoutHandler = () => {
-        if (accountLogin) {
+        if (accountToken) {
             history.push('/checkout');
         } else {
             history.push('/profile/signin');
         }
     };
-
-    const removeProductFromCartHandler = (id) => {
-        dispatch(removeProductFromCart(id));
+    const removeProductFromCartHandler = (product) => {
+        dispatch(removeProductFromCart(product));
+    };
+    const emptyCartHandler = () => {
+        dispatch(removeAllProductsFromCart());
     };
     useEffect(() => {
+        if (!accountToken) {
+            history.push('/profile/signin');
+        }
         if (productId) {
-            dispatch(addProductToCart(productId, quantityCount));
+            dispatch(addProductToCart(productId, productCount));
             history.push('/cart');
         }
-    }, [dispatch, productId, quantityCount, accountLogin, history]);
+        if (!cart && !error) {
+            dispatch(readCart());
+        }
+    }, [dispatch,
+        accountToken,
+        productId,
+        productCount,
+        cart,
+        success,
+        error,
+        history]);
     return (
         <Row>
             <Col md={8}>
-                <h3>Shopping Cart</h3>
-                {cart.length === 0
+                <Row>
+                    <Col md={9}>
+                        <h3>Shopping Cart</h3>
+                    </Col>
+                    <Col md={3}>
+                        <Button
+                            type='button'
+                            className='pull-right my-4'
+                            disabled={!success || cart.length === 0}
+                            variant='danger'
+                            onClick={() => emptyCartHandler()}>
+                            Empty Cart
+                        </Button>
+                    </Col>
+                </Row>
+                {loading && <Loader />}
+                {!success || cart.length === 0
                     ? <Message variant='light'>Your cart is empty</Message>
                     : <ListGroup>
-                        {cart.map(product => (
+                        {cart.map((product, index) => (
                             <ListGroup.Item key={product._id}>
                                 <Row className="align-items-center">
-                                    <Col xs={2} md={2}>
-                                        <Image src={product.image} alt={product.name} fluid rounded />
+                                    <Col xs={1} md={1}>
+                                        <h5>{index + 1}</h5>
                                     </Col>
-                                    <Col xs={2} md={3}>
+                                    <Col xs={2} md={4}>
                                         <Link className='text-dark' to={`/product/${product._id}`} key={product._id}><h5>{product.name}</h5></Link>
                                     </Col>
                                     <Col xs={4} md={3}>
-                                        <h5>$ {product.price}</h5>
+                                        <h5>$ {product.productPrice}</h5>
                                     </Col>
                                     <Col xs={2} md={2}>
-                                        <h5>{product.quantity}</h5>
+                                        <h5>{product.productCount}</h5>
                                     </Col>
                                     <Col xs={1} md={2}>
                                         <Button
                                             type='button'
                                             variant='danger'
-                                            onClick={() => removeProductFromCartHandler(product._id)}>
+                                            onClick={() => removeProductFromCartHandler(product)}>
                                             <i className='fas fa-trash' />
                                         </Button>
                                     </Col>
@@ -75,8 +107,8 @@ const CartScreen = ({ match, history, location }) => {
                     </ListGroup.Item>
                     <ListGroup.Item>
                         <strong>
-                            Subtotal: $ {cart.length !== 0
-                                ? cart.map(item => item.price * item.quantity)
+                            Subtotal: $ {success && cart.length !== 0
+                                ? cart.map(item => item.productPrice * item.productCount)
                                     .reduce((acc, cur) => acc + cur)
                                 : 0}
                         </strong>
@@ -88,8 +120,8 @@ const CartScreen = ({ match, history, location }) => {
                     </ListGroup.Item>
                     <ListGroup.Item>
                         <strong>
-                            Total: {cart.length !== 0
-                                ? Number(cart.map(item => item.price * item.quantity)
+                            Total: {success && cart.length !== 0
+                                ? Number(cart.map(item => item.productPrice * item.productCount)
                                     .reduce((acc, cur) => acc + cur) + 10)
                                     .toFixed(2)
                                 : 0}
@@ -99,7 +131,7 @@ const CartScreen = ({ match, history, location }) => {
                         <Row>
                             <Col className='m-auto' md={10}>
                                 <Button
-                                    disabled={cart.length === 0}
+                                    disabled={success && cart.length === 0}
                                     type='button'
                                     className='btn-block'
                                     onClick={checkoutHandler}>

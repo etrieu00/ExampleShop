@@ -1,6 +1,10 @@
 import asynch from 'express-async-handler';
 import generateJWT from '../utils/generateJWT.js';
-import User from '../database/models/userModel.js';
+import User from '../models/userModel.js';
+import {
+    Client,
+    CREATE_CART
+} from '../utils/redisPubSub.js';
 
 const createUser = asynch(async (req, res) => {
     const { email, password } = req.body;
@@ -13,6 +17,7 @@ const createUser = asynch(async (req, res) => {
         email,
         password,
     });
+    Client.publish(CREATE_CART, JSON.stringify({ id: user._id }));
     if (user) {
         res.status(201)
             .json({

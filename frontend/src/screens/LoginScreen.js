@@ -6,7 +6,7 @@ import Message from '../components/messages/Message';
 import { accountSignIn } from '../redux/actions/accountActions';
 const LoginScreen = ({ history }) => {
     const dispatch = useDispatch();
-    const { accountLogin, error } = useSelector(state => state.accountLogin);
+    const { accountToken, error } = useSelector(state => state.accountLogin);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -16,10 +16,10 @@ const LoginScreen = ({ history }) => {
     };
 
     useEffect(() => {
-        if (accountLogin) {
+        if (accountToken) {
             history.push('/');
         }
-    }, [history, accountLogin]);
+    }, [history, accountToken]);
 
     return (
         <Container>

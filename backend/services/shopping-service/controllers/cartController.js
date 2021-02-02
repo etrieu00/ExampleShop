@@ -1,24 +1,11 @@
 import asynch from 'express-async-handler';
-import Cart from '../database/models/cartModel.js';
-
-const createCart = asynch(async (req, res) => {
-    const cart = await Cart.create({
-        userId: req._id,
-        cart: [],
-    });
-    if (cart) {
-        res.status(201);
-    } else {
-        res.status(401)
-            .json({ message: 'Failed to create cart' });
-    }
-});
+import Cart from '../models/cartModel.js';
 
 const readCart = asynch(async (req, res) => {
-    const cart = Cart.findOne({ userId: req._id });
+    const cart = await Cart.findOne({ userId: req._id });
     if (cart) {
         res.status(200)
-            .json(cart);
+            .json(cart.cart);
     } else {
         res.status(401)
             .json({ message: 'Failed to read user cart' });
@@ -26,19 +13,19 @@ const readCart = asynch(async (req, res) => {
 });
 
 const updateCart = asynch(async (req, res) => {
-    const cart = Cart.findOne({ userId: req._id });
+    const cart = await Cart.findOne({ userId: req._id });
     if (cart) {
         const index = cart.cart
-            .findIndex(({ productId }) => productId === req.product.productId);
+            .findIndex(({ productId }) => productId === req.body.productId);
         if (index === -1) {
-            cart.cart = [...cart.cart, req.product];
+            cart.cart = [...cart.cart, req.body];
         } else {
-            if (req.product.productCount === 0) {
+            if (req.body.productCount === 0) {
                 const newCart = cart.cart
-                    .filter(({ productId }) => productId !== req.product.productId);
+                    .filter(({ productId }) => productId !== req.body.productId);
                 cart.cart = newCart;
             } else {
-                cart.cart[index] = req.product;
+                cart.cart[index] = req.body;
             }
         }
         const updatedCart = await cart.save();
@@ -51,11 +38,11 @@ const updateCart = asynch(async (req, res) => {
 });
 
 const deleteCart = asynch(async (req, res) => {
-    const cart = Cart.findOne({ userId: req._id });
+    const cart = await Cart.findOne({ userId: req._id });
     if (cart) {
         cart.cart = [];
         await cart.save();
-        res.status(200);
+        res.status(202).json({ message: 'Cart emptied' });
     } else {
         res.status(403)
             .json({ message: 'Failed to delete cart' });
@@ -63,7 +50,6 @@ const deleteCart = asynch(async (req, res) => {
 });
 
 export {
-    createCart,
     readCart,
     updateCart,
     deleteCart,

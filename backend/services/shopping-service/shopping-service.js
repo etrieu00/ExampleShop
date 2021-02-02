@@ -1,11 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import connectMyDB from './database/db.js';
+import connectMyDB from './utils/mongodbConnecter.js';
 import shoppingRoutes from './routes/shoppingRoutes.js';
+import CartEvent from './controllers/eventSubscribers.js';
 
 dotenv.config();
 const app = express();
 connectMyDB();
+CartEvent();
 
 const SERVICE_NAME = process.env.SERVICE_NAME || 'Service'
 const PORT = process.env.SERVER_PORT || 80;

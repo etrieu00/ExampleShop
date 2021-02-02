@@ -16,6 +16,15 @@ services:
     depends_on: 
       - catalog-service
 ###############################################################################
+# Redis Pubsub and cache
+###############################################################################
+  redis-pubsub:
+    container_name: redis-pubsub
+    image: redis:6.2-rc2
+    restart: unless-stopped
+    expose:
+      - "6379"
+###############################################################################
 # Service for the catalog
 ###############################################################################
   catalog-service: 
@@ -27,6 +36,8 @@ services:
     environment:
       - SERVICE_NAME=Catalog
       - SERVER_PORT=4000
+      - REDIS_HOST=redis-pubsub
+      - REDIS_PORT=6379
       - DATABASE_URI=mongodb://catalog-database:27017/Products
     volumes:
       - "./services/catalog-service/:/app/catalog-service"
@@ -57,6 +68,8 @@ services:
     environment:
       - SERVICE_NAME=Authentication
       - SERVER_PORT=4000
+      - REDIS_HOST=redis-pubsub
+      - REDIS_PORT=6379
       - DATABASE_URI=mongodb://authentication-database:27017/User
     volumes:
       - "./services/authentication-service/:/app/authentication-service"
@@ -64,6 +77,7 @@ services:
     expose:
       - "4000"
     depends_on:
+      - redis-pubsub
       - authentication-database
   authentication-database:
     container_name: authentication-database
@@ -87,13 +101,16 @@ services:
     environment:
       - SERVICE_NAME=Shopping
       - SERVER_PORT=4000
-      - DATABASE_URI=mongodb://shopping-database:27017/User
+      - REDIS_HOST=redis-pubsub
+      - REDIS_PORT=6379
+      - DATABASE_URI=mongodb://shopping-database:27017/Cart
     volumes:
       - "./services/shopping-service/:/app/shopping-service"
       - "./services/utils/:/app/shopping-service/utils/"
     expose:
       - "4000"
     depends_on:
+      - redis-pubsub
       - shopping-database
   shopping-database:
     container_name: shopping-database

@@ -5,17 +5,16 @@ import { Nav, Navbar, Container } from 'react-bootstrap';
 import { accountSignOut } from '../../redux/actions/accountActions'
 const Header = () => {
     const dispatch = useDispatch();
-    const { accountLogin } = useSelector(state => state.accountLogin);
+    const { accountToken } = useSelector(state => state.accountLogin);
     const logoutHandler = () => {
         dispatch(accountSignOut());
     };
-
     return (
         <header>
             <Navbar className='p-0' bg='white' variant='light'>
                 <Container>
                     <Nav className='ml-auto' >
-                        {accountLogin
+                        {accountToken
                             ? <>
                                 <LinkContainer to='/' >
                                     <Nav.Link

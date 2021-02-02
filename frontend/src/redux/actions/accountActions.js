@@ -17,6 +17,7 @@ import {
     UPDATE_ACCOUNT_SUCCESS,
     UPDATE_ACCOUNT_FAIL,
 } from '../constants/accountConstants';
+import { SHOPPING_READ_RESET } from '../constants/shoppingConstants';
 
 export const accountSignIn = (credentials) => async (dispatch) => {
     try {
@@ -59,6 +60,9 @@ export const accountSignOut = () => async (dispatch) => {
         type: READ_ACCOUNT_RESET,
     });
     dispatch({
+        type: SHOPPING_READ_RESET,
+    });
+    dispatch({
         type: SIGN_OUT_SUCCESS,
     });
 };
@@ -83,11 +87,11 @@ export const accountCreate = (account) => async (dispatch) => {
             type: CREATE_ACCOUNT_SUCCESS,
             payload: data,
         });
-        localStorage.setItem('accountToken', JSON.stringify(data));
         dispatch({
             type: SIGN_IN_SUCCESS,
             payload: data,
         });
+        localStorage.setItem('accountToken', JSON.stringify(data));
     } catch (error) {
         dispatch({
             type: CREATE_ACCOUNT_FAIL,

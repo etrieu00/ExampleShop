@@ -20,8 +20,11 @@ import {
     accountUpdateReducer,
 } from './reducers/accountReducers';
 import {
-    shoppingCartReducer,
+    addToCartReducer,
+    readFromCartReducer,
     readShippingInformationReducer,
+    removeFromCartReducer,
+    removeAllFromCartReducer,
     updateShippingInformationReducer,
 } from './reducers/shoppingReducers'
 
@@ -31,7 +34,10 @@ const reducer = combineReducers({
     productRead: productReadReducer,
     productUpdate: productUpdateReducer,
     productDelete: productDeleteReducer,
-    shoppingCart: shoppingCartReducer,
+    addtoCart: addToCartReducer,
+    readFromCart: readFromCartReducer,
+    removeFromCart: removeFromCartReducer,
+    removeAllFromCart: removeAllFromCartReducer,
     accountLogin: accountSignInReducer,
     accountSignOut: accountSignOutReducer,
     accountCreate: accountCreateReducer,
@@ -41,10 +47,7 @@ const reducer = combineReducers({
     shippingInfoUpdate: updateShippingInformationReducer,
 });
 
-const cartFromStorage = localStorage.getItem('shoppingCart')
-    ? JSON.parse(localStorage.getItem('shoppingCart'))
-    : [];
-const accountFromStorage = localStorage.getItem('accountToken')
+const tokenFromStorage = localStorage.getItem('accountToken')
     ? JSON.parse(localStorage.getItem('accountToken'))
     : null;
 const shippingInfoFromStorage = localStorage.getItem('shippingInfo')
@@ -53,8 +56,7 @@ const shippingInfoFromStorage = localStorage.getItem('shippingInfo')
     : null;
 
 const initialState = {
-    shoppingCart: { cart: cartFromStorage },
-    accountLogin: { accountLogin: accountFromStorage },
+    accountLogin: { accountToken: tokenFromStorage },
     shippingInfo: { shippingInfo: shippingInfoFromStorage },
 };
 

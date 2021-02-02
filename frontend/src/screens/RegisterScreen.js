@@ -11,7 +11,7 @@ const RegisterScreen = ({ history }) => {
     const [password2, setPassword2] = useState('');
 
     const dispatch = useDispatch();
-    const { accountLogin } = useSelector(state => state.accountLogin);
+    const { accountToken } = useSelector(state => state.accountLogin);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -27,10 +27,10 @@ const RegisterScreen = ({ history }) => {
     };
 
     useEffect(() => {
-        if (accountLogin) {
+        if (accountToken) {
             history.push('/');
         }
-    }, [history, accountLogin]);
+    }, [history, accountToken]);
 
     return (
         <Container>

@@ -1,8 +1,18 @@
 import axios from 'axios';
 import {
-    SHOPPING_ADD,
-    SHOPPING_REMOVE,
-    SHOPPING_REMOVE_ALL,
+    SHOPPING_ADD_REQUEST,
+    SHOPPING_ADD_SUCCESS,
+    SHOPPING_ADD_FAIL,
+    SHOPPING_READ_REQUEST,
+    SHOPPING_READ_SUCCESS,
+    SHOPPING_READ_FAIL,
+    SHOPPING_READ_RESET,
+    SHOPPING_REMOVE_REQUEST,
+    SHOPPING_REMOVE_SUCCESS,
+    SHOPPING_REMOVE_FAIL,
+    SHOPPING_REMOVE_ALL_REQUEST,
+    SHOPPING_REMOVE_ALL_SUCCESS,
+    SHOPPING_REMOVE_ALL_FAIL,
     READ_SHIPPING_INFO_REQUEST,
     READ_SHIPPING_INFO_SUCCESS,
     READ_SHIPPING_INFO_FAIL,
@@ -12,44 +22,135 @@ import {
 } from '../constants/shoppingConstants';
 
 export const addProductToCart = (id, quantity) => async (dispatch, getState) => {
-    // Get data from actual back end
     try {
-        const { data: product } = await axios.get(`/api/v1/products/${id}`);
         dispatch({
-            type: SHOPPING_ADD,
-            payload: {
-                _id: product._id,
-                name: product.name,
-                category: product.category,
-                price: product.price,
-                image: product.images[0],
-                quantity: quantity,
-            }
+            type: SHOPPING_ADD_REQUEST,
         });
-        //Add to cart on actual back end
-        localStorage.setItem('shoppingCart', JSON.stringify(getState().shoppingCart.cart));
+        const { data: productInfo } = await axios.get(`/api/v1/catalog/${id}`);
+        const product = {
+            name: productInfo.name,
+            productId: productInfo._id,
+            productPrice: productInfo.price,
+            productCount: quantity,
+        };
+        const { accountLogin: { accountToken } } = getState();
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${accountToken.token}`,
+            }
+        };
+        const { data } = await axios.put(
+            '/api/v1/shopping/cart',
+            product,
+            config
+        );
+        dispatch({
+            type: SHOPPING_ADD_SUCCESS,
+        });
+        dispatch({
+            type: SHOPPING_READ_SUCCESS,
+            payload: data
+        });
     } catch (error) {
-
+        dispatch({
+            type: SHOPPING_ADD_FAIL,
+            payload: error,
+        });
     }
-
 };
 
-export const removeProductFromCart = (id) => async (dispatch, getState) => {
-    dispatch({
-        type: SHOPPING_REMOVE,
-        payload: id,
-    })
-    // Remove from actual backend
-    localStorage.setItem('shoppingCart', JSON.stringify(getState().shoppingCart.cart));
+export const readCart = () => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: SHOPPING_READ_REQUEST,
+        });
+        const { accountLogin: { accountToken } } = getState();
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${accountToken.token}`,
+            }
+        };
+        const { data } = await axios.get(
+            '/api/v1/shopping/cart',
+            config,
+        );
+        dispatch({
+            type: SHOPPING_READ_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: SHOPPING_READ_FAIL,
+            payload: 'Failed to read cart',
+        });
+    }
 };
 
-export const removeAllProductsFromCart = () => async (dispatch) => {
-    dispatch({
-        type: SHOPPING_REMOVE_ALL,
-    });
+export const removeProductFromCart = (item) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: SHOPPING_REMOVE_REQUEST,
+        });
+        const { accountLogin: { accountToken } } = getState();
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${accountToken.token}`,
+            }
+        };
+        const product = {
+            ...item,
+            productCount: 0,
+        };
+        const { data } = await axios.put(
+            '/api/v1/shopping/cart',
+            product,
+            config,
+        );
+        dispatch({
+            type: SHOPPING_REMOVE_SUCCESS,
+        });
+        dispatch({
+            type: SHOPPING_READ_SUCCESS,
+            payload: data
+        });
+    } catch (error) {
+        dispatch({
+            type: SHOPPING_REMOVE_FAIL,
+            error: error,
+        })
+    }
+};
 
-    // Remove from actual backend
-    localStorage.removeItem('shoppingCart');
+export const removeAllProductsFromCart = () => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: SHOPPING_REMOVE_ALL_REQUEST,
+        });
+        const { accountLogin: { accountToken } } = getState();
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${accountToken.token}`,
+            }
+        };
+        await axios.delete(
+            '/api/v1/shopping/cart',
+            config,
+        );
+        dispatch({
+            type: SHOPPING_REMOVE_ALL_SUCCESS,
+        });
+        dispatch({
+            type: SHOPPING_READ_RESET,
+        });
+    } catch (error) {
+        dispatch({
+            type: SHOPPING_REMOVE_ALL_FAIL,
+        });
+    }
 };
 
 export const readShippingInfo = () => async (dispatch) => {

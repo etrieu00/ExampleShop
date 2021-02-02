@@ -1,5 +1,5 @@
 import express from 'express';
-import connectMyDB from './database/db.js';
+import connectMyDB from './utils/mongodbConnecter.js';
 import catalogRoutes from './routes/catalogRoutes.js';
 import {
     populatePseudoData,

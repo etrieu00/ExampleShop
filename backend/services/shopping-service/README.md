@@ -9,20 +9,6 @@ DATABASE_URI=
 ```
     
 # Routes
-## POST:/api/v1/shopping/cart ```private```
-Description
-```
-Create a new cart for the user in the database
-```
-### Request payload
-```js
-{
-    headers: {
-        authorization: `Bearer ${ACCESS_TOKEN}`
-    },
-}
-```
-
 ## GET:/api/v1/shopping/cart ```private```
 ### Description
 ```

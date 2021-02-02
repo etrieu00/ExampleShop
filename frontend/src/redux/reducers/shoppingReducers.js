@@ -1,7 +1,17 @@
 import {
-    SHOPPING_ADD,
-    SHOPPING_REMOVE,
-    SHOPPING_REMOVE_ALL,
+    SHOPPING_ADD_REQUEST,
+    SHOPPING_ADD_SUCCESS,
+    SHOPPING_ADD_FAIL,
+    SHOPPING_READ_REQUEST,
+    SHOPPING_READ_SUCCESS,
+    SHOPPING_READ_FAIL,
+    SHOPPING_READ_RESET,
+    SHOPPING_REMOVE_REQUEST,
+    SHOPPING_REMOVE_SUCCESS,
+    SHOPPING_REMOVE_FAIL,
+    SHOPPING_REMOVE_ALL_REQUEST,
+    SHOPPING_REMOVE_ALL_SUCCESS,
+    SHOPPING_REMOVE_ALL_FAIL,
     READ_SHIPPING_INFO_REQUEST,
     READ_SHIPPING_INFO_SUCCESS,
     READ_SHIPPING_INFO_FAIL,
@@ -10,36 +20,89 @@ import {
     UPDATE_SHIPPING_INFO_FAIL,
 } from '../constants/shoppingConstants';
 
-export const shoppingCartReducer = (state = { cart: [] }, action) => {
+export const addToCartReducer = (state = {}, action) => {
     switch (action.type) {
-        case SHOPPING_ADD:
-            const product = action.payload;
-            const existingItem = state.cart.find(item => item._id === product._id);
-            if (existingItem) {
-                return {
-                    cart: state.cart.map(item => {
-                        if (item._id === existingItem._id) {
-                            return {
-                                ...item,
-                                quantity: item.quantity + product.quantity
-                            };
-                        } else {
-                            return item;
-                        }
-                    })
-                };
-            } else {
-                return {
-                    cart: [...state.cart, product]
-                }
-            }
-        case SHOPPING_REMOVE:
+        case SHOPPING_ADD_REQUEST:
             return {
-                cart: state.cart.filter(product => product._id !== action.payload),
+                loading: true,
             };
-        case SHOPPING_REMOVE_ALL:
+        case SHOPPING_ADD_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+            };
+        case SHOPPING_ADD_FAIL:
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const readFromCartReducer = (state = {}, action) => {
+    switch (action.type) {
+        case SHOPPING_READ_REQUEST:
+            return {
+                loading: true,
+            };
+        case SHOPPING_READ_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+                cart: [...action.payload],
+            };
+        case SHOPPING_READ_FAIL:
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        case SHOPPING_READ_RESET:
             return {
                 cart: [],
+            };
+        default:
+            return state;
+    }
+};
+
+export const removeFromCartReducer = (state = {}, action) => {
+    switch (action.type) {
+        case SHOPPING_REMOVE_REQUEST:
+            return {
+                loading: true,
+            };
+        case SHOPPING_REMOVE_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+            };
+        case SHOPPING_REMOVE_FAIL:
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const removeAllFromCartReducer = (state = {}, action) => {
+    switch (action.type) {
+        case SHOPPING_REMOVE_ALL_REQUEST:
+            return {
+                loading: true,
+            };
+        case SHOPPING_REMOVE_ALL_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+            };
+        case SHOPPING_REMOVE_ALL_FAIL:
+            return {
+                loading: false,
+                error: action.payload,
             };
         default:
             return state;

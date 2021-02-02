@@ -1,5 +1,5 @@
 import products from './products.js';
-import Product from '../database/models/productModels.js';
+import Product from '../models/productModels.js';
 
 const populatePseudoData = async () => {
     try {

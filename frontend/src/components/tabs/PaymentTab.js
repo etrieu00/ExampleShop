@@ -1,5 +1,5 @@
 import React from 'react';
-import { Nav, ListGroup, Tab, Row, Col, Card } from 'react-bootstrap';
+import { Nav, ListGroup, Tab, Row, Col } from 'react-bootstrap';
 const PaymentTab = () => {
     return (
         <Tab.Container defaultActiveKey='paypal'>

@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Row, Col, ListGroup } from 'react-bootstrap';
-const ConfirmOrderTab = () => {
+const OrderTab = () => {
     const dispatch = useDispatch();
-    const { cart } = useSelector(state => state.shoppingCart);
+    const { cart } = useSelector(state => state.readFromCart);
     useEffect(() => {
 
     }, [dispatch, cart]);
@@ -20,21 +20,21 @@ const ConfirmOrderTab = () => {
                     </Row>
                 </ListGroup.Item>
                 {cart.map(product => (
-                    <ListGroup.Item key={product.id}>
+                    <ListGroup.Item key={product._id}>
                         <Row className="align-items-center">
                             <Col>
                                 <Link
                                     className='text-dark'
-                                    to={`/product/${product.id}`}
+                                    to={`/product/${product.productId}`}
                                     key={product.id}>
                                     <h6>{product.name}</h6>
                                 </Link>
                             </Col>
                             <Col>
-                                <h6>$ {product.price}</h6>
+                                <h6>$ {product.productPrice}</h6>
                             </Col>
                             <Col>
-                                <h6>{product.quantity}</h6>
+                                <h6>{product.productCount}</h6>
                             </Col>
                         </Row>
                     </ListGroup.Item>
@@ -43,4 +43,4 @@ const ConfirmOrderTab = () => {
     );
 }
 
-export default ConfirmOrderTab
+export default OrderTab;

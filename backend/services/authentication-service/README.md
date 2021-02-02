@@ -83,7 +83,7 @@ Updates the user's password or email in the database
 ```
 
 ## DELETE:/api/va/users/:id  ```admin```
-Description
+### Description
 ```
 Deletes the user from the database
 ```

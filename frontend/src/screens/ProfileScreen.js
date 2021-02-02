@@ -8,15 +8,15 @@ import PurchaseHistoryTab from '../components/tabs/PurchaseHistoryTab';
 import { updateShippingInfo } from '../redux/actions/shoppingActions';
 const ProfileScreen = ({ history }) => {
     const dispatch = useDispatch();
-    const { accountLogin } = useSelector(state => state.accountLogin);
+    const { accountToken } = useSelector(state => state.accountLogin);
     const { success } = useSelector(state => state.shippingInfoUpdate);
     useEffect(() => {
-        if (accountLogin) {
+        if (accountToken) {
 
         } else {
             history.push('/profile/signin');
         }
-    }, [history, dispatch, accountLogin, success]);
+    }, [history, dispatch, accountToken, success]);
 
     const submitAddressHandler = (e, address) => {
         e.preventDefault();
